@@ -1,0 +1,23 @@
+# IDE-specific files
+**/.vscode
+**/.idea
+**/cmake-build-debug*/
+
+# Temp files
+**/*.swp
+**/*.swo
+**/*.temp
+**/*.d
+
+# Binary files
+**/*.o
+**/*.a
+**/*a.out*
+philosophers
+
+# Trash
+.DS_Store
+.minishell_history
+#/*
+#.vscode/settings.json
+minishell_test.log
