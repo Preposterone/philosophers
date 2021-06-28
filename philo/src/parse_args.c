@@ -24,7 +24,7 @@ bool	ft_is_all_digits(char **argv)
 	return (true);
 }
 
-void	ft_parse_digits(char **argv, t_philo_config *config)
+void	ft_parse_config(char **argv, t_philo_config *config)
 {
 	int i;
 
@@ -42,4 +42,20 @@ void	ft_parse_digits(char **argv, t_philo_config *config)
 		else if (i == 4)
 			config->eat_times = ft_atoi(argv[i]);
 	}
+}
+
+bool	ft_parse_args(int argc, char **argv, t_philo_config *config)
+{
+	bool ret;
+
+	ret = true;
+	if ((argc != 5 && argc != 6) || (!ft_is_all_digits(argv)))
+	{
+		ret = false;
+	}
+	else
+	{
+		ft_parse_config(argv, config);
+	}
+	return (ret);
 }

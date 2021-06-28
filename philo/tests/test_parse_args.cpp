@@ -5,6 +5,8 @@ extern "C" {
 }
 /* TODO: maybe refactor to parametarized list ? */
 
+//class
+
 TEST(args_list, args_not_digits) {
 	char *args[] = {"123", "000-1", "abc", NULL};
 	bool ret = ft_is_all_digits(args);
@@ -20,7 +22,7 @@ TEST(are_args_digits, args_are_digits) {
 TEST(parse_args, is_parsed_correctly) {
 	t_philo_config config_tmp = {0};
 	char *args[] = {"123", "123", NULL};
-	ft_parse_digits(args, &config_tmp);
+	ft_parse_config(args, &config_tmp);
 	int i = -1;
 	int x;
 
