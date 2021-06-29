@@ -8,12 +8,13 @@ static char *ft_trim_execname(char *argv_0)
 
 static void print_usage(char *exec_name)
 {
-	//TODO: add args' description
+	//TODO: add args' description ?
 	printf("Usage: %s " USG USG_OPT "\n", exec_name);
 }
 
 static int ft_incorrect_args(char *argv_0)
 {
+	ft_putendl_fd("Error! Incorrect amount of arguments!", 2);
 	print_usage(ft_trim_execname(argv_0));
 	return (1);
 }
@@ -25,7 +26,7 @@ int main (int argc, char *argv[])
 {
 	t_philo_config config;
 
-	if (!ft_parse_args(argc, argv, &config))
+	if (!ft_parse_args(argc, &argv[1], &config))
 	{
 		return ft_incorrect_args(argv[0]);
 	}

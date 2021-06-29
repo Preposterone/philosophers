@@ -49,7 +49,7 @@ bool	ft_parse_args(int argc, char **argv, t_philo_config *config)
 	bool ret;
 
 	ret = true;
-	if ((argc != 5 && argc != 6) || (!ft_is_all_digits(argv)))
+	if ((argc != 5 && argc != 6) || (!ft_is_all_digits(&argv[1])))
 	{
 		ret = false;
 	}

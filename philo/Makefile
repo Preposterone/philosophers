@@ -29,7 +29,7 @@ clean:
 	/bin/rm -f $(OBJS)
 
 fclean:	clean cleanlib
-	/bin/rm -f $(NAME)
+	/bin/rm -f $(addprefix $(BIN_DIR)/, $(NAME))
 
 cleanall: fclean dclean
 
@@ -43,6 +43,9 @@ debugsetup: dclean
 	@echo "*********BEGIN DEBUG*********"
 	@tput sgr 0
 
+run: all
+	@./$(addprefix $(BIN_DIR)/, $(NAME))
+	
 #extra
 norm:
 	@make norm -C $(LFT_DIR)
