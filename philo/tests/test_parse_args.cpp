@@ -1,20 +1,16 @@
 #include "gtest/gtest.h"
 
+
 extern "C" {
-	#include "philo.h"
+#include "philo.h"
 }
-/* TODO: maybe refactor to parametarized list ? */
 
-class args_parser_fixture_correct : public ::testing::TestWithParam<std::array<std::string, 6>>
-{
-	public:
-		t_philo_config config = {0};
-};
+using namespace std;
 
-class args_parser_fixture_incorrect : public ::testing::TestWithParam<std::array<std::string, 6>>
-{
-	public:
-		t_philo_config config = {0};
+class argsParserFixture
+		: public ::testing::TestWithParam<tuple<array<string, 6>, bool>> {
+public:
+	t_philo_config config = {0};
 };
 
 TEST(args_list, args_not_digits) {
@@ -36,10 +32,9 @@ TEST(parse_args, is_parsed_correctly) {
 	int i = -1;
 	int x;
 
-	while (args[++i] != NULL)
-	{
+	while (args[++i] != NULL) {
 		x = 0;
-		x = std::stoi(args[i], nullptr, 10);
+		x = stoi(args[i], nullptr, 10);
 		switch (i) {
 			case 1:
 				ASSERT_EQ(x, config_tmp.count);
@@ -60,48 +55,31 @@ TEST(parse_args, is_parsed_correctly) {
 	}
 }
 
-TEST_P(args_parser_fixture_correct, incorrect_args)
-{
-	const char *param[6];
-	std::array<std::string, 6> extracted_param = GetParam();
+TEST_P(argsParserFixture, incorrect_args) {
+	const char *param[7] = {NULL};
+	array<string, 6> extracted_param = get<0>(GetParam());
 
 	for (int i = 0; i < 6; ++i) {
 		param[i] = extracted_param.at(i).c_str();
 	}
 
-	ASSERT_EQ(ft_parse_args(6, (char**)param, &config), true);
-}
-
-TEST_P(args_parser_fixture_incorrect, correct_args)
-{
-	const char *param[6];
-	std::array<std::string, 6> extracted_param = GetParam();
-
-	for (int i = 0; i < 6; ++i) {
-		param[i] = extracted_param.at(i).c_str();
-	}
-
-	ASSERT_EQ(ft_parse_args(6, (char**)param, &config), false);
+	ASSERT_EQ(ft_parse_args(6, (char **) param, &config),
+			  get<1>(GetParam()));
 }
 
 INSTANTIATE_TEST_SUITE_P(
-		incorrect_args,
-		args_parser_fixture_incorrect,
-		::testing::Values(
-			std::array<std::string, 6>{"execname", "123","123", "-145","", ""},
-			std::array<std::string, 6>{"execname", "123","-123", "1a45","", ""},
-			std::array<std::string, 6>{"execname", "123","123", "1b45","", ""},
-			std::array<std::string, 6>{"execname", "123","123", "1c45","", ""}
-			)
-		);
-
-INSTANTIATE_TEST_SUITE_P(	//FIXME
 		correct_args,
-		args_parser_fixture_correct,
+		argsParserFixture,
 		::testing::Values(
-			std::array<std::string, 6>{"execname", "123","123", "145", "12", "80"},
-			std::array<std::string, 6>{"execname", "123","123", "145", "12", "800"},
-			std::array<std::string, 6>{"execname", "123","123", "145", "102", "34564"},
-			std::array<std::string, 6>{"execname", "123","123", "145", "99999", "9999"}
-			)
-		);
+				/* should return true */
+				make_tuple(array<string, 6>{"execname", "123", "123","145", "12", "80"}, true),
+				make_tuple(array<string, 6>{"execname", "123", "123","145", "12", "800"}, true),
+				make_tuple(array<string, 6>{"execname", "123", "123","145", "102", "34564"}, true),
+				make_tuple(array<string, 6>{"execname", "123", "123","145", "99999", "9999"}, true),
+				/* should return false */
+				make_tuple(array<string, 6>{"execname", "123", "123","-145", "", ""}, false),
+				make_tuple(array<string, 6>{"execname", "123", "-123","145", "", ""}, false),
+				make_tuple(array<string, 6>{"execname", "123", "123","1b45", "", ""}, false),
+				make_tuple(array<string, 6>{"execname", "123", "123","1c45", "", ""}, false)
+		)
+);
