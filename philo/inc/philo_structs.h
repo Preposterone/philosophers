@@ -4,6 +4,7 @@
 
 # include <sys/types.h>
 # include <stdbool.h>
+# include <limits.h>
 
 /**
  * count - number of philisophers

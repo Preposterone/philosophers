@@ -1,5 +1,18 @@
 
 #include "philo.h"
+/*TODO: Any limits for parameters?*/
+static bool	ft_validate_config(t_philo_config *config)
+{
+	if (config->count < 1)
+		return (false);
+	if (config->tt_die < 1)
+		return (false);
+	if (config->tt_eat < 1)
+		return (false);
+	if (config->tt_sleep < 1)
+		return (false);
+	return (true);
+}
 
 bool	ft_is_all_digits(char **argv)
 {
@@ -46,16 +59,9 @@ void	ft_parse_config(char **argv, t_philo_config *config)
 
 bool	ft_parse_args(int argc, char **argv, t_philo_config *config)
 {
-	bool ret;
-
-	ret = true;
 	if ((argc != 5 && argc != 6) || (!ft_is_all_digits(&argv[1])))
-	{
-		ret = false;
-	}
+		return (false);
 	else
-	{
-		ft_parse_config(argv, config);
-	}
-	return (ret);
+		ft_parse_config(&argv[1], config);
+	return (ft_validate_config(config));
 }
