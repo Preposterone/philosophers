@@ -13,6 +13,7 @@ public:
 	t_philo_config config = {0};
 };
 
+/*
 TEST(args_list, args_not_digits) {
 	char *args[] = {"123", "000-1", "abc", NULL};
 	bool ret = ft_is_all_digits(args);
@@ -53,7 +54,7 @@ TEST(parse_args, is_parsed_correctly) {
 				break;
 		}
 	}
-}
+}*/
 
 TEST_P(argsParserFixture, incorrect_args) {
 	const char *param[7] = {NULL};
@@ -71,15 +72,17 @@ INSTANTIATE_TEST_SUITE_P(
 		correct_args,
 		argsParserFixture,
 		::testing::Values(
-				/* should return true */
+				/* Correct amount of args  */
 				make_tuple(array<string, 6>{"execname", "123", "123","145", "12", "80"}, true),
 				make_tuple(array<string, 6>{"execname", "123", "123","145", "12", "800"}, true),
 				make_tuple(array<string, 6>{"execname", "123", "123","145", "102", "34564"}, true),
 				make_tuple(array<string, 6>{"execname", "123", "123","145", "99999", "9999"}, true),
+				make_tuple(array<string, 6>{"execname", "99999999999", "99999999999","99999999999", "99999999999", "99999999999"}, true),
+				make_tuple(array<string, 6>{"execname", "0", "1","1", "1", "1"}, false),
 				/* should return false */
-				make_tuple(array<string, 6>{"execname", "123", "123","-145", "", ""}, false),
-				make_tuple(array<string, 6>{"execname", "123", "-123","145", "", ""}, false),
-				make_tuple(array<string, 6>{"execname", "123", "123","1b45", "", ""}, false),
-				make_tuple(array<string, 6>{"execname", "123", "123","1c45", "", ""}, false)
+				make_tuple(array<string, 6>{"execname", "123", "123","-145"}, false),
+				make_tuple(array<string, 6>{"execname", "123", "-123","145"}, false),
+				make_tuple(array<string, 6>{"execname", "123", "123","1b45"}, false),
+				make_tuple(array<string, 6>{"execname", "123", "123","1c45"}, false)
 		)
 );

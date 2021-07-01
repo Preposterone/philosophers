@@ -14,7 +14,7 @@ static bool	ft_validate_config(t_philo_config *config)
 	return (true);
 }
 
-bool	ft_is_all_digits(char **argv)
+static bool	ft_is_all_digits(char **argv)
 {
 	int		i;
 	int		j;
@@ -37,7 +37,7 @@ bool	ft_is_all_digits(char **argv)
 	return (true);
 }
 
-void	ft_parse_config(char **argv, t_philo_config *config)
+static void	ft_parse_config(char **argv, t_philo_config *config)
 {
 	int i;
 
