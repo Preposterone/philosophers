@@ -29,4 +29,4 @@ FetchContent_MakeAvailable(googletest)
 
 #tests
 add_executable(test_args philo/tests/test_parse_args.cpp ${PHILO_SRCS})
-target_link_libraries(test_args gtest_main libft)
+target_link_libraries(test_args gtest_main libft pthread)
