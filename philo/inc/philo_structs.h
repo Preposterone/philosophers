@@ -16,11 +16,11 @@
 
 typedef struct s_philo_config
 {
-	uint	count;
-	uint	tt_die;
-	uint	tt_eat;
-	uint	tt_sleep;
-	uint	eat_times;
+	int64_t	count;
+	int64_t	tt_die;
+	int64_t	tt_eat;
+	int64_t	tt_sleep;
+	int64_t	eat_times;
 }	t_philo_config;
 
 #endif

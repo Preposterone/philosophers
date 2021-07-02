@@ -1,15 +1,15 @@
 
 #include "philo.h"
-/*TODO: Any limits for parameters?*/
-static bool	ft_validate_config(t_philo_config *config)
+
+static bool	ft_validate_config(int argc, t_philo_config *config)
 {
-	if (config->count < 1)
+	if (config->count < 1 || config->count > INT_MAX)
 		return (false);
-	if (config->tt_die < 1)
+	if (config->tt_die < 1 || config->tt_die > INT_MAX)
 		return (false);
-	if (config->tt_eat < 1)
+	if (config->tt_eat < 1 || config->tt_eat > INT_MAX)
 		return (false);
-	if (config->tt_sleep < 1)
+	if (argc == 6 && (config->tt_sleep < 1 || config->tt_sleep > INT_MAX))
 		return (false);
 	return (true);
 }
@@ -27,7 +27,7 @@ static bool	ft_is_all_digits(char **argv)
 		c = argv[i][++j];
 		while (c)
 		{
-			if (!ft_isdigit(c))
+			if (!ft_isdigit(c) || j >= 10)
 			{
 				return (false);
 			}
@@ -45,23 +45,23 @@ static void	ft_parse_config(char **argv, t_philo_config *config)
 	while (argv[++i])
 	{
 		if (i == 0)
-			config->count = ft_atoi(argv[i]);
+			config->count = ft_atoll(argv[i]);
 		else if (i == 1)
-			config->tt_die = ft_atoi(argv[i]);
+			config->tt_die = ft_atoll(argv[i]);
 		else if (i == 2)
-			config->tt_eat = ft_atoi(argv[i]);
+			config->tt_eat = ft_atoll(argv[i]);
 		else if (i == 3)
-			config->tt_sleep = ft_atoi(argv[i]);
+			config->tt_sleep = ft_atoll(argv[i]);
 		else if (i == 4)
-			config->eat_times = ft_atoi(argv[i]);
+			config->eat_times = ft_atoll(argv[i]);
 	}
 }
 
 bool	ft_parse_args(int argc, char **argv, t_philo_config *config)
 {
-	if ((argc != 5 && argc != 6) || (!ft_is_all_digits(&argv[1])))
+	if ((argc != 5 && argc != 6) || (!ft_is_all_digits(argv)))
 		return (false);
 	else
-		ft_parse_config(&argv[1], config);
-	return (ft_validate_config(config));
+		ft_parse_config(argv, config);
+	return (ft_validate_config(argc, config));
 }

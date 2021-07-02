@@ -14,7 +14,7 @@ static void print_usage(char *exec_name)
 
 static int ft_incorrect_args(char *argv_0)
 {
-	ft_putendl_fd("Error! Incorrect amount of arguments!", 2);
+	ft_putendl_fd("Error! Incorrect usage!", 2);
 	print_usage(ft_trim_execname(argv_0));
 	return (1);
 }
