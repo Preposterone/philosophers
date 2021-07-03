@@ -1,6 +1,7 @@
 
 #include "philo.h"
 #include <pthread.h>
+#include "slog.h"
 
 static char *ft_trim_execname(char *argv_0)
 {
@@ -20,12 +21,21 @@ static int ft_incorrect_args(char *argv_0)
 	return (1);
 }
 
-void *job () {
-    printf("Test for threads\n");
-    sleep(3);
-    printf("Ending thread\n");
+int forks;
+pthread_mutex_t mutex;
 
-    return NULL;
+void *job (void *index) {
+
+	pthread_mutex_lock(&mutex);
+
+	if (forks > 0) {
+		slogd("Forks: %d", forks);
+		forks--;
+		printf("Philosopher '%d' has taken a fork!\n", *(int*)index + 1);
+	}
+	pthread_mutex_unlock(&mutex);
+
+	return NULL;
 }
 
 /**
@@ -34,28 +44,34 @@ void *job () {
 int main (int argc, char *argv[])
 {
 	t_philo_config config;
+	slog_init("example", SLOG_FLAGS_ALL, 1);
+
+	pthread_mutex_init(&mutex, NULL);
 
 	if (!ft_parse_args(argc, &argv[1], &config))
 	{
 		return ft_incorrect_args(argv[0]);
 	}
 
-	pthread_t t1 = {0};
-	pthread_t t2 = {0};
+	forks = config.count;
+	pthread_t t[config.count];
 
-    if (pthread_create(&t1, NULL, &job, NULL) != 0) {а
-        return 1;
+	for (int philo = 0; philo < config.count; philo++) {
+	    int philo_index = philo;
+		if (pthread_create(&t[philo], NULL, &job, (void *)&philo_index) != 0) {
+			exit (1);
+		}
+	}
+
+	for (int i = 0; i < config.count; i++){
+        if (pthread_join(t[i], NULL) != 0) {
+            exit (2);
+        }
     }
 
-    if (pthread_create(&t2, NULL, &job, NULL) != 0) {
-        return 2;
-    }
+	pthread_mutex_destroy(&mutex);
+	slogd("Num of forks: %d\n", forks);
 
-    if (pthread_join(t1, NULL) != 0) {
-        return 3;
-    }
-    if (pthread_join(t2, NULL) != 0) {
-        return 4;
-    }
+	slog_destroy();
 	return (0);
 }
