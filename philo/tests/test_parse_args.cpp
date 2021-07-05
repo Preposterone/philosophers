@@ -10,7 +10,7 @@ using namespace std;
 class argsParserFixture
 		: public ::testing::TestWithParam<tuple<array<string, 6>, bool>> {
 public:
-	t_philo_config config = {0};
+	t_config config = {0};
 };
 
 /*
@@ -27,7 +27,7 @@ TEST(are_args_digits, args_are_digits) {
 }
 
 TEST(parse_args, is_parsed_correctly) {
-	t_philo_config config_tmp = {0};
+	t_config config_tmp = {0};
 	char *args[] = {"123", "123", NULL};
 	ft_parse_config(args, &config_tmp);
 	int i = -1;

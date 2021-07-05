@@ -1,6 +1,19 @@
 
 #include "philo.h"
 
+static void print_usage(char *exec_name)
+{
+	//TODO: add args' description ?
+	printf("Usage: %s " USG USG_OPT "\n", exec_name);
+}
+
+int ft_incorrect_args(char *argv_0)
+{
+	ft_putendl_fd("Error! Incorrect usage!", 2);
+	print_usage(ft_trim_execname(argv_0));
+	return (1);
+}
+
 static bool	ft_is_all_digits(char **argv)
 {
 	int		i;
@@ -24,7 +37,7 @@ static bool	ft_is_all_digits(char **argv)
 	return (true);
 }
 
-static bool	ft_parse_config(char **argv, t_philo_config *config)
+static bool	ft_parse_config(char **argv, t_config *config)
 {
 	int		i;
 	int64_t	tmp;
@@ -49,7 +62,7 @@ static bool	ft_parse_config(char **argv, t_philo_config *config)
 	return (true);
 }
 
-bool	ft_parse_args(int argc, char **argv, t_philo_config *config)
+bool	ft_parse_args(int argc, char **argv, t_config *config)
 {
 	if ((argc != 5 && argc != 6) || (!ft_is_all_digits(argv)))
 		return (false);

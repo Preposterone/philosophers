@@ -1,77 +1,113 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aarcelia <aarcelia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/05 11:24:33 by aarcelia          #+#    #+#             */
+/*   Updated: 2021/07/05 11:24:33 by aarcelia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
-#include <pthread.h>
-#include "slog.h"
 
-static char *ft_trim_execname(char *argv_0)
+void *killer_job(void *philo_p)
 {
-	return (ft_strrchr(argv_0, '/') + 1);
-}
+	t_philosopher *philo;
 
-static void print_usage(char *exec_name)
-{
-	//TODO: add args' description ?
-	printf("Usage: %s " USG USG_OPT "\n", exec_name);
-}
-
-static int ft_incorrect_args(char *argv_0)
-{
-	ft_putendl_fd("Error! Incorrect usage!", 2);
-	print_usage(ft_trim_execname(argv_0));
-	return (1);
-}
-
-int forks;
-pthread_mutex_t mutex;
-
-void *job (void *index) {
-
-	pthread_mutex_lock(&mutex);
-
-	if (forks > 0) {
-		slogd("Forks: %d", forks);
-		forks--;
-		printf("Philosopher '%d' has taken a fork!\n", *(int*)index + 1);
+	philo = (t_philosopher *)philo_p;
+	while (true)
+	{
+		pthread_mutex_lock(&philo->busy);
+		if (!philo->is_eating && get_current_time() > philo->will_die_at)
+		{
+			simulation_message(philo, P_RED PHILO_DIED P_RESET);
+			pthread_mutex_unlock(&philo->busy);
+			pthread_mutex_unlock(&philo->main_struct->main_thread); //to exit in main
+			return (NULL);
+		}
+		pthread_mutex_unlock(&philo->busy);
+		usleep(1000);
 	}
-	pthread_mutex_unlock(&mutex);
+	return (NULL);
+}
 
-	return NULL;
+void *philosopher_job(void *philo_p)
+{
+	t_philosopher	*philo;
+	pthread_t		tid;
+
+	philo = (t_philosopher *)philo_p;
+	philo->last_ate = get_current_time();
+	philo->will_die_at = philo->last_ate + philo->main_struct->config.tt_die;
+	if (pthread_create(&tid, NULL, &killer_job, philo_p) != 0)
+		return (NULL);
+	while (true)
+	{
+		//pick_up_forks
+		philo_pick_up_forks(philo);
+		//eat
+		philo_eat(philo);
+		//drop forks
+		philo_drop_forks(philo);
+		//sleep
+		philo_sleep(philo);
+		//think
+		philo_think(philo);
+	}
+	return (NULL);
+}
+
+static bool start_threads(t_main *simulation)
+{
+	int			i;
+	pthread_t	tid;
+	void		*tmp;
+
+	simulation->start_time = get_current_time();
+	i = -1;
+	while (++i < simulation->config.count)
+	{
+		tmp = (void *)&simulation->philosophers[i];
+		if (pthread_create(&tid, NULL, &philosopher_job, tmp) != 0)
+			return (false);
+		pthread_detach(tid);
+		usleep(USLEEP_GENERIC);
+	}
+	return (true);
 }
 
 /**
+ * Several philosophers are sitting at a round table doing one of three things:
+ * eating, thinking, or sleeping.
+ * While eating, they are not thinking or sleeping,
+ * while sleeping, they are not eating or thinking and of course,
+ * while thinking, they are not eating or sleeping.
  * @param argv: philo_amount time_to_die time_to_eat time_to_sleep eat_times
+ * each parameter has to be '0 < parameter <= INT_MAX'
  */
 int main (int argc, char *argv[])
 {
-	t_philo_config config;
-	slog_init("example", SLOG_FLAGS_ALL, 1);
+	t_main	main_struct;
+	int		ret;
 
-	pthread_mutex_init(&mutex, NULL);
-
-	if (!ft_parse_args(argc, &argv[1], &config))
-	{
-		return ft_incorrect_args(argv[0]);
+	ft_bzero(&main_struct, sizeof(t_main));
+	pthread_mutex_init(&main_struct.main_thread, NULL);
+	pthread_mutex_lock(&main_struct.main_thread);
+	ret = 0;
+	if (!ft_parse_args(argc, &argv[1], &main_struct.config)){
+		ret = ft_incorrect_args(argv[0]);
 	}
-
-	forks = config.count;
-	pthread_t t[config.count];
-
-	for (int philo = 0; philo < config.count; philo++) {
-	    int philo_index = philo;
-		if (pthread_create(&t[philo], NULL, &job, (void *)&philo_index) != 0) {
-			exit (1);
-		}
+	else if (!simulation_init(&main_struct)) {
+		ret = ft_puterr("Fatal error! Malloc failed!");
 	}
-
-	for (int i = 0; i < config.count; i++){
-        if (pthread_join(t[i], NULL) != 0) {
-            exit (2);
-        }
-    }
-
-	pthread_mutex_destroy(&mutex);
-	slogd("Num of forks: %d\n", forks);
-
-	slog_destroy();
-	return (0);
+	else if (!start_threads(&main_struct)) {
+		ret = ft_puterr("Fatal error! Couldn't start threads!");
+	}
+	else
+		pthread_mutex_lock(&main_struct.main_thread);	//endless loop
+	pthread_mutex_unlock(&main_struct.main_thread);
+	//cleanup, dealloc
+	return (ret);
 }
