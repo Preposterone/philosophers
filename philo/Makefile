@@ -29,7 +29,7 @@ clean:
 	/bin/rm -f $(OBJS)
 
 fclean:	clean cleanlib
-	/bin/rm -f $(addprefix $(BIN_DIR)/, $(NAME))
+	/bin/rm -f $(NAME)
 
 cleanall: fclean dclean
 
