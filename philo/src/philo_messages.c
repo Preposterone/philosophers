@@ -6,7 +6,7 @@
 /*   By: aarcelia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:29:19 by aarcelia          #+#    #+#             */
-/*   Updated: 2021/07/06 20:54:15 by aarcelia         ###   ########.fr       */
+/*   Updated: 2021/07/06 21:02:15 by aarcelia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	dinner_over_message(t_main *main_struct, int times)
 
 	pthread_mutex_lock(&main_struct->msg_queue);
 	timestamp = get_elapsed_time(main_struct->start_time);
-	printf("[" "%6llu ms" "]: Dinner's over! Everyone ate at least '%d' times\n",
-		   timestamp, times);
+	printf("[" P_YELLOW "%6llu ms" P_RESET "]: Dinner's over! "
+		"Everyone ate at least '%d' times\n", timestamp, times);
 }
 
 void	simulation_message(t_philosopher *philo, char *msg, bool death)
