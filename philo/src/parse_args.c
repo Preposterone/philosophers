@@ -1,13 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_args.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aarcelia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/06 14:08:54 by aarcelia          #+#    #+#             */
+/*   Updated: 2021/07/06 14:08:56 by aarcelia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
 
-static void print_usage(char *exec_name)
+static void	print_usage(char *exec_name)
 {
-	//TODO: add args' description ?
 	printf("Usage: %s " USG USG_OPT "\n", exec_name);
 }
 
-int ft_incorrect_args(char *argv_0)
+int	ft_incorrect_args(char *argv_0)
 {
 	ft_putendl_fd("Error! Incorrect usage!", 2);
 	print_usage(ft_trim_execname(argv_0));

@@ -12,42 +12,39 @@
 
 #include "philo.h"
 
-void philo_pick_up_forks(t_philosopher *philo)
+void	philo_pick_up_forks(t_philosopher *philo)
 {
-	pthread_mutex_lock(&philo->main_struct->forks[philo->left_fork]);
-	simulation_message(philo, PHILO_FORK);
+	simulation_message(philo, PHILO_FORK, false);
 	pthread_mutex_lock(&philo->main_struct->forks[philo->right_fork]);
-	simulation_message(philo, PHILO_FORK);
+	simulation_message(philo, PHILO_FORK, false);
+	pthread_mutex_lock(&philo->main_struct->forks[philo->left_fork]);
 }
 
-void philo_eat(t_philosopher *philo)
+void	philo_eat(t_philosopher *philo)
 {
 	pthread_mutex_lock(&philo->busy);
 	philo->is_eating = true;
 	philo->last_ate = get_current_time();
-	philo->will_die_at = philo->last_ate + philo->main_struct->config.tt_die;
-	simulation_message(philo, P_GREEN PHILO_EATING P_RESET);
+	simulation_message(philo, P_GREEN PHILO_EATING P_RESET, false);
 	usleep(philo->main_struct->config.tt_eat * 1000);
 	philo->ate_times++;
 	philo->is_eating = false;
 	pthread_mutex_unlock(&philo->busy);
 }
 
-void philo_drop_forks(t_philosopher *philo)
+void	philo_drop_forks(t_philosopher *philo)
 {
-	pthread_mutex_unlock(&philo->main_struct->forks[philo->left_fork]);
-//	simulation_message(philo, "has put down a fork.");
 	pthread_mutex_unlock(&philo->main_struct->forks[philo->right_fork]);
-//	simulation_message(philo, "has put down a fork.");
+	pthread_mutex_unlock(&philo->main_struct->forks[philo->left_fork]);
 }
 
-void philo_sleep(t_philosopher *philo)
+void	philo_sleep(t_philosopher *philo)
 {
-	simulation_message(philo, PHILO_SLEEPING);
+	simulation_message(philo, PHILO_SLEEPING, false);
 	usleep(philo->main_struct->config.tt_sleep * 1000);
 }
 
-void philo_think(t_philosopher *philo)
+void	philo_think(t_philosopher *philo)
 {
-	simulation_message(philo, PHILO_THINKING);
+	simulation_message(philo, PHILO_THINKING, false);
 }

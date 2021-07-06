@@ -44,7 +44,6 @@ typedef struct s_philosopher
 	int				id;
 	bool			is_eating;
 	uint64_t		last_ate;
-	uint64_t		will_die_at;
 	int				left_fork;
 	int				right_fork;
 	int				ate_times;

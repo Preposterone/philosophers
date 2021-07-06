@@ -23,7 +23,7 @@ bool		simulation_init(t_main *simulation);
 int			ft_puterr(char *s);
 int			ft_incorrect_args(char *argv_0);
 char		*ft_trim_execname(char *argv_0);
-void		simulation_message(t_philosopher *philo, char *msg);
+void		simulation_message(t_philosopher *philo, char *msg, bool death);
 void		philo_pick_up_forks(t_philosopher *philo);
 void		philo_eat(t_philosopher *philo);
 void		philo_drop_forks(t_philosopher *philo);
@@ -38,15 +38,16 @@ uint64_t	get_elapsed_time(uint64_t start_time);
 # define DESC ""
 # define PHILO_FORK "has taken a fork."
 # define PHILO_EATING "is eating."
-# define PHILO_SLEEPING "is eating."
+# define PHILO_SLEEPING "is sleeping."
 # define PHILO_THINKING "is thinking."
 # define PHILO_DIED "has died."
 # define P_GREEN   "\x1b[92m"
 # define P_RED   "\x1b[91m"
 # define P_YELLOW   "\x1b[33m"
 # define P_RESET   "\x1b[0m"
+# define BUF_WIDTH 100
 # ifndef USLEEP_GENERIC
-#  define USLEEP_GENERIC 100
+#  define USLEEP_GENERIC 1000
 # endif
 
 #endif
