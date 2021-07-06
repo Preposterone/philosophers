@@ -12,14 +12,6 @@
 
 #include "philo.h"
 
-void	philo_pick_up_forks(t_philosopher *philo)
-{
-	simulation_message(philo, PHILO_FORK, false);
-	pthread_mutex_lock(&philo->main_struct->forks[philo->right_fork]);
-	simulation_message(philo, PHILO_FORK, false);
-	pthread_mutex_lock(&philo->main_struct->forks[philo->left_fork]);
-}
-
 void	philo_eat(t_philosopher *philo)
 {
 	pthread_mutex_lock(&philo->busy);
@@ -47,4 +39,15 @@ void	philo_sleep(t_philosopher *philo)
 void	philo_think(t_philosopher *philo)
 {
 	simulation_message(philo, PHILO_THINKING, false);
+}
+
+void	philo_pick_up_forks(t_philosopher *philo)
+{
+	if (!philo->main_struct->party_over)
+	{
+		pthread_mutex_lock(&philo->main_struct->forks[philo->right_fork]);
+		simulation_message(philo, PHILO_FORK, false);
+		pthread_mutex_lock(&philo->main_struct->forks[philo->left_fork]);
+		simulation_message(philo, PHILO_FORK, false);
+	}
 }

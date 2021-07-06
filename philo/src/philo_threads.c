@@ -39,6 +39,7 @@ static void	*dinner_killer(void *main_p)
 		while (++i < main_struct->config.count)
 			pthread_mutex_lock(&main_struct->philosophers[i].just_ate);
 	}
+	main_struct->party_over = true;
 	dinner_over_message(main_struct, main_struct->config.eat_times);
 	pthread_mutex_unlock(&main_struct->main_thread);
 	return (NULL);
@@ -56,12 +57,13 @@ static void	*killer_job(void *philo_p)
 		if (!philo->is_eating && (int)(get_current_time() - philo->last_ate)
 								 > philo->main_struct->config.tt_die)
 		{
+			philo->main_struct->party_over = true;
 			simulation_message(philo, P_RED PHILO_DIED P_RESET, true);
 			pthread_mutex_unlock(&philo->main_struct->main_thread);
 			break ;
 		}
 		pthread_mutex_unlock(&philo->busy);
-		ft_usleep(1000);
+		usleep(USLEEP_GENERIC);
 	}
 	return (NULL);
 }
@@ -77,7 +79,7 @@ static void	*philosopher_job(void *philo_p)
 	if (pthread_create(&id, NULL, &killer_job, philo_p) != 0)
 		return (NULL);
 	pthread_detach(id);
-	while (true)
+	while (!philo->main_struct->party_over)
 	{
 		philo_pick_up_forks(philo);
 		philo_eat(philo);
@@ -110,6 +112,7 @@ bool	start_threads(t_main *simulation)
 		if (pthread_create(&id, NULL, philosopher_job, tmp) != 0)
 			return (false);
 		pthread_detach(id);
+		usleep(USLEEP_GENERIC);
 	}
 	return (true);
 }

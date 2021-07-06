@@ -53,6 +53,7 @@ typedef struct s_philosopher
 
 typedef struct s_main
 {
+	bool			party_over;
 	t_config		config;
 	uint64_t		start_time;
 	t_philosopher	*philosophers;

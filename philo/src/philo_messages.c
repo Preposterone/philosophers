@@ -12,17 +12,28 @@
 
 #include "philo.h"
 
-/*void	simulation_message(t_philosopher *philo, char *msg, bool death)
+void	dinner_over_message(t_main *main_struct, int times)
+{
+	uint64_t	timestamp;
+
+	pthread_mutex_lock(&main_struct->msg_queue);
+	timestamp = get_elapsed_time(main_struct->start_time);
+	printf("[" "%6llu ms" "]: Dinner's over! Everyone ate at least '%d' times\n",
+		   timestamp, times);
+}
+
+void	simulation_message(t_philosopher *philo, char *msg, bool death)
 {
 	uint64_t timestamp;
 
 	pthread_mutex_lock(&philo->main_struct->msg_queue);
 	timestamp = get_elapsed_time(philo->main_struct->start_time);
-	printf("[" "%6llu ms" "]: Philosopher [%d]\t[%s]\n",
+	printf("[" P_YELLOW "%6llu ms" P_RESET "]: Philosopher [%d]\t[%s]\n",
 		   timestamp, philo->id + 1, msg);
 	if (!death)
 		pthread_mutex_unlock(&philo->main_struct->msg_queue);
-}*/
+}
+/*
 
 void	dinner_over_message(t_main *main_struct, int times)
 {
@@ -53,6 +64,7 @@ void	simulation_message(t_philosopher *philo, char *msg, bool death)
 	if (!death)
 		pthread_mutex_unlock(&philo->main_struct->msg_queue);
 }
+*/
 
 /*
 void	simulation_message(t_philosopher *philo, char *msg)
