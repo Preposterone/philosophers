@@ -32,3 +32,22 @@ void	ft_putnbr_fd(int n, int fd)
 	}
 	ft_putstrr_fd(s, fd);
 }
+
+void	ft_putnllu_fd(uint64_t n, int fd)
+{
+	uint64_t	num;
+	char		s[20];
+	int			i;
+
+	i = 0;
+	num = n;
+	ft_bzero(s, 20);
+	if (!n)
+		ft_putchar_fd('0', fd);
+	while (num)
+	{
+		s[i++] = num % 10 + '0';
+		num /= 10;
+	}
+	ft_putstrr_fd(s, fd);
+}

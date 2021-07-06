@@ -21,3 +21,6 @@ philosophers
 #/*
 #.vscode/settings.json
 minishell_test.log
+
+philosophers_test
+result.txt

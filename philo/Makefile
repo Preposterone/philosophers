@@ -1,4 +1,4 @@
-NAME := philosophers
+NAME := philo
 
 include variables.mk
 
@@ -15,7 +15,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 $(NAME): $(OBJS)
 	@$(MAKE) -j 6 -C $(LFT_DIR)/
 	@mv $(LFT_DIR)/libft.a $(LIB_DIR)
-	$(CC) $(CFLAGS) $(IFLAGS) -o $(addprefix $(BIN_DIR)/, $(NAME)) $(OBJS) $(LFLAGS)
+	$(CC) $(CFLAGS) $(IFLAGS) -o $(NAME) $(OBJS) $(LFLAGS)
 	@echo ${NAME} compiled
 
 re:	fclean all
@@ -29,7 +29,7 @@ clean:
 	/bin/rm -f $(OBJS)
 
 fclean:	clean cleanlib
-	/bin/rm -f $(addprefix $(BIN_DIR)/, $(NAME))
+	/bin/rm -f $(NAME)
 
 cleanall: fclean dclean
 
@@ -44,7 +44,7 @@ debugsetup: dclean
 	@tput sgr 0
 
 run: all
-	@./$(addprefix $(BIN_DIR)/, $(NAME))
+	@./$(NAME)
 	
 #extra
 norm:

@@ -14,7 +14,7 @@ HEADERS :=	$(addprefix $(INC_DIR)/, $(H_FILES))
 
 #compiler setup
 CC := gcc
-CFLAGS += -Wall -Werror -Wextra -o2
+CFLAGS += -Wall -Werror -Wextra -g3 -pthread
 IFLAGS += -I$(INC_DIR)/
 
 #Sources

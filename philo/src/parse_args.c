@@ -1,20 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_args.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aarcelia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/06 14:08:54 by aarcelia          #+#    #+#             */
+/*   Updated: 2021/07/06 14:08:56 by aarcelia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
-/*TODO: Any limits for parameters?*/
-static bool	ft_validate_config(t_philo_config *config)
+
+static void	print_usage(char *exec_name)
 {
-	if (config->count < 1)
-		return (false);
-	if (config->tt_die < 1)
-		return (false);
-	if (config->tt_eat < 1)
-		return (false);
-	if (config->tt_sleep < 1)
-		return (false);
-	return (true);
+	printf("Usage: %s " USG USG_OPT "\n", exec_name);
 }
 
-bool	ft_is_all_digits(char **argv)
+int	ft_incorrect_args(char *argv_0)
+{
+	ft_putendl_fd("Error! Incorrect usage!", 2);
+	print_usage(ft_trim_execname(argv_0));
+	return (1);
+}
+
+static bool	ft_is_all_digits(char **argv)
 {
 	int		i;
 	int		j;
@@ -27,7 +37,7 @@ bool	ft_is_all_digits(char **argv)
 		c = argv[i][++j];
 		while (c)
 		{
-			if (!ft_isdigit(c))
+			if (!ft_isdigit(c) || j >= 10)
 			{
 				return (false);
 			}
@@ -37,31 +47,36 @@ bool	ft_is_all_digits(char **argv)
 	return (true);
 }
 
-void	ft_parse_config(char **argv, t_philo_config *config)
+static bool	ft_parse_config(char **argv, t_config *config)
 {
-	int i;
+	int		i;
+	int64_t	tmp;
 
 	i = -1;
 	while (argv[++i])
 	{
+		tmp = ft_atoll(argv[i]);
+		if (tmp <= 0 || tmp > INT_MAX)
+			return (false);
 		if (i == 0)
-			config->count = ft_atoi(argv[i]);
+			config->count = (int)tmp;
 		else if (i == 1)
-			config->tt_die = ft_atoi(argv[i]);
+			config->tt_die = (int)tmp;
 		else if (i == 2)
-			config->tt_eat = ft_atoi(argv[i]);
+			config->tt_eat = (int)tmp;
 		else if (i == 3)
-			config->tt_sleep = ft_atoi(argv[i]);
+			config->tt_sleep = (int)tmp;
 		else if (i == 4)
-			config->eat_times = ft_atoi(argv[i]);
+			config->eat_times = (int)tmp;
 	}
+	return (true);
 }
 
-bool	ft_parse_args(int argc, char **argv, t_philo_config *config)
+bool	ft_parse_args(int argc, char **argv, t_config *config)
 {
-	if ((argc != 5 && argc != 6) || (!ft_is_all_digits(&argv[1])))
+	if ((argc != 5 && argc != 6) || (!ft_is_all_digits(argv)))
 		return (false);
-	else
-		ft_parse_config(&argv[1], config);
-	return (ft_validate_config(config));
+	else if (!ft_parse_config(argv, config))
+		return (false);
+	return (true);
 }
