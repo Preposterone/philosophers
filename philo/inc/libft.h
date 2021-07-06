@@ -204,6 +204,6 @@ int		ft_strcmpl(const char *s1, const char *s2);
 ** strcmp until char 'c' is encountered
 */
 int		ft_strcmp_untill_c(const char *s1, const char *s2, char c);
-void	ft_putnllu_fd(uint64_t n, int fd);
+void	ft_putnllu_fd(u_int64_t n, int fd);
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routines.c                                         :+:      :+:    :+:   */
+/*   philo_routines.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarcelia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:45:53 by aarcelia          #+#    #+#             */
-/*   Updated: 2021/07/05 17:45:55 by aarcelia         ###   ########.fr       */
+/*   Updated: 2021/07/06 20:53:01 by aarcelia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,8 @@ void	philo_think(t_philosopher *philo)
 
 void	philo_pick_up_forks(t_philosopher *philo)
 {
-	if (!philo->main_struct->party_over)
-	{
-		pthread_mutex_lock(&philo->main_struct->forks[philo->right_fork]);
-		simulation_message(philo, PHILO_FORK, false);
-		pthread_mutex_lock(&philo->main_struct->forks[philo->left_fork]);
-		simulation_message(philo, PHILO_FORK, false);
-	}
+	pthread_mutex_lock(&philo->main_struct->forks[philo->right_fork]);
+	simulation_message(philo, PHILO_FORK, false);
+	pthread_mutex_lock(&philo->main_struct->forks[philo->left_fork]);
+	simulation_message(philo, PHILO_FORK, false);
 }

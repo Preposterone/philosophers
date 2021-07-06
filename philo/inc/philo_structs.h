@@ -6,7 +6,7 @@
 /*   By: aarcelia <aarcelia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 11:24:37 by aarcelia          #+#    #+#             */
-/*   Updated: 2021/07/05 11:24:37 by aarcelia         ###   ########.fr       */
+/*   Updated: 2021/07/06 20:50:08 by aarcelia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct s_philosopher
 
 typedef struct s_main
 {
-	bool			party_over;
 	t_config		config;
 	uint64_t		start_time;
 	t_philosopher	*philosophers;

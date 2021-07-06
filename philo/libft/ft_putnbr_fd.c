@@ -33,9 +33,9 @@ void	ft_putnbr_fd(int n, int fd)
 	ft_putstrr_fd(s, fd);
 }
 
-void	ft_putnllu_fd(uint64_t n, int fd)
+void	ft_putnllu_fd(u_int64_t n, int fd)
 {
-	uint64_t	num;
+	u_int64_t	num;
 	char		s[20];
 	int			i;
 

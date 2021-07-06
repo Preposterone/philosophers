@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   messages.c                                         :+:      :+:    :+:   */
+/*   philo_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarcelia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:29:19 by aarcelia          #+#    #+#             */
-/*   Updated: 2021/07/05 17:29:29 by aarcelia         ###   ########.fr       */
+/*   Updated: 2021/07/06 20:54:15 by aarcelia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	dinner_over_message(t_main *main_struct, int times)
 {
-	uint64_t	timestamp;
+	unsigned long long	timestamp;
 
 	pthread_mutex_lock(&main_struct->msg_queue);
 	timestamp = get_elapsed_time(main_struct->start_time);
@@ -24,7 +24,7 @@ void	dinner_over_message(t_main *main_struct, int times)
 
 void	simulation_message(t_philosopher *philo, char *msg, bool death)
 {
-	uint64_t timestamp;
+	unsigned long long	timestamp;
 
 	pthread_mutex_lock(&philo->main_struct->msg_queue);
 	timestamp = get_elapsed_time(philo->main_struct->start_time);
@@ -33,8 +33,8 @@ void	simulation_message(t_philosopher *philo, char *msg, bool death)
 	if (!death)
 		pthread_mutex_unlock(&philo->main_struct->msg_queue);
 }
-/*
 
+/*
 void	dinner_over_message(t_main *main_struct, int times)
 {
 	uint64_t	timestamp;
@@ -63,28 +63,5 @@ void	simulation_message(t_philosopher *philo, char *msg, bool death)
 	ft_putstr_fd("]\n", 1);
 	if (!death)
 		pthread_mutex_unlock(&philo->main_struct->msg_queue);
-}
-*/
-
-/*
-void	simulation_message(t_philosopher *philo, char *msg)
-{
-	static char	buf[BUF_WIDTH];
-	static char	num[20];
-	uint64_t	timestamp;
-	int			i;
-
-	pthread_mutex_lock(&philo->main_struct->msg_queue);
-	memset(buf, 0, BUF_WIDTH);
-	memset(num, 0, 20);
-	//[ TIMESTAMP ]: Philosopher [...]/t [action]\n
-	//[ 20 ]: Philosopher [5]/t[action]\n
-	timestamp = get_elapsed_time(philo->main_struct->start_time);
-	i = -1;
-	while(++i)
-	{
-		;
-	}
-	pthread_mutex_unlock(&philo->main_struct->msg_queue);
 }
 */
