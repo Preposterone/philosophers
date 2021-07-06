@@ -31,6 +31,9 @@ void		philo_sleep(t_philosopher *philo);
 void		philo_think(t_philosopher *philo);
 uint64_t	get_current_time(void);
 uint64_t	get_elapsed_time(uint64_t start_time);
+void		ft_usleep(uint64_t time);
+bool		start_threads(t_main *simulation);
+void		dinner_over_message(t_main *main_struct, int times);
 
 /*=================================CONSTANTS==================================*/
 # define USG "<num_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep>"
@@ -45,9 +48,8 @@ uint64_t	get_elapsed_time(uint64_t start_time);
 # define P_RED   "\x1b[91m"
 # define P_YELLOW   "\x1b[33m"
 # define P_RESET   "\x1b[0m"
-# define BUF_WIDTH 100
 # ifndef USLEEP_GENERIC
-#  define USLEEP_GENERIC 1000
+#  define USLEEP_GENERIC 100
 # endif
 
 #endif

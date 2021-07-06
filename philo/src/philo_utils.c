@@ -54,6 +54,8 @@ static void	init_philosophers(t_main *simulation)
 		philo[i].right_fork = (i - 1 + simulation->config.count)
 			% simulation->config.count;
 		pthread_mutex_init(&philo[i].busy, NULL);
+		pthread_mutex_init(&philo[i].just_ate, NULL);
+		pthread_mutex_lock(&philo[i].just_ate);
 	}
 }
 

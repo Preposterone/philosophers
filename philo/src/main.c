@@ -12,69 +12,6 @@
 
 #include "philo.h"
 
-void	*killer_job(void *philo_p)
-{
-	t_philosopher	*philo;
-
-	philo = (t_philosopher *)philo_p;
-	while (true)
-	{
-		pthread_mutex_lock(&philo->busy);
-		if (!philo->is_eating && (int)(get_current_time() - philo->last_ate)
-					> philo->main_struct->config.tt_die)
-		{
-			simulation_message(philo, P_RED PHILO_DIED P_RESET, true);
-			pthread_mutex_unlock(&philo->busy);
-			pthread_mutex_unlock(&philo->main_struct->main_thread);
-			break ;
-		}
-		pthread_mutex_unlock(&philo->busy);
-		usleep(USLEEP_GENERIC);
-	}
-	return (NULL);
-}
-
-//	philo->will_die_at = philo->last_ate + philo->main_struct->config.tt_die;
-void	*philosopher_job(void *philo_p)
-{
-	t_philosopher	*philo;
-	pthread_t		tid;
-
-	philo = (t_philosopher *)philo_p;
-	philo->last_ate = get_current_time();
-	if (pthread_create(&tid, NULL, &killer_job, philo_p) != 0)
-		return (NULL);
-	pthread_detach(tid);
-	while (true)
-	{
-		philo_pick_up_forks(philo);
-		philo_eat(philo);
-		philo_drop_forks(philo);
-		philo_sleep(philo);
-		philo_think(philo);
-	}
-	return (NULL);
-}
-
-//		usleep(USLEEP_GENERIC);
-static bool	start_threads(t_main *simulation)
-{
-	int			i;
-	pthread_t	tid;
-	void		*tmp;
-
-	simulation->start_time = get_current_time();
-	i = -1;
-	while (++i < simulation->config.count)
-	{
-		tmp = (void *)&simulation->philosophers[i];
-		if (pthread_create(&tid, NULL, philosopher_job, tmp) != 0)
-			return (false);
-		pthread_detach(tid);
-	}
-	return (true);
-}
-
 static void	cleanup(t_main *simulation)
 {
 	int	i;
@@ -90,7 +27,10 @@ static void	cleanup(t_main *simulation)
 	{
 		i = -1;
 		while (++i < simulation->config.count)
+		{
 			pthread_mutex_destroy(&simulation->philosophers[i].busy);
+			pthread_mutex_destroy(&simulation->philosophers[i].just_ate);
+		}
 		free(simulation->philosophers);
 	}
 	pthread_mutex_destroy(&simulation->msg_queue);

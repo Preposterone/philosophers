@@ -46,8 +46,8 @@ typedef struct s_philosopher
 	uint64_t		last_ate;
 	int				left_fork;
 	int				right_fork;
-	int				ate_times;
 	struct s_main	*main_struct;
+	pthread_mutex_t	just_ate;
 	pthread_mutex_t	busy;
 }				t_philosopher;
 

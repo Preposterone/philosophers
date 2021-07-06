@@ -26,10 +26,10 @@ void	philo_eat(t_philosopher *philo)
 	philo->is_eating = true;
 	philo->last_ate = get_current_time();
 	simulation_message(philo, P_GREEN PHILO_EATING P_RESET, false);
-	usleep(philo->main_struct->config.tt_eat * 1000);
-	philo->ate_times++;
+	ft_usleep(philo->main_struct->config.tt_eat);
 	philo->is_eating = false;
 	pthread_mutex_unlock(&philo->busy);
+	pthread_mutex_unlock(&philo->just_ate);
 }
 
 void	philo_drop_forks(t_philosopher *philo)
@@ -41,7 +41,7 @@ void	philo_drop_forks(t_philosopher *philo)
 void	philo_sleep(t_philosopher *philo)
 {
 	simulation_message(philo, PHILO_SLEEPING, false);
-	usleep(philo->main_struct->config.tt_sleep * 1000);
+	ft_usleep(philo->main_struct->config.tt_sleep);
 }
 
 void	philo_think(t_philosopher *philo)
