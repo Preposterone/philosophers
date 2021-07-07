@@ -6,7 +6,7 @@
 /*   By: aarcelia <aarcelia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 11:24:20 by aarcelia          #+#    #+#             */
-/*   Updated: 2021/07/07 09:27:58 by aarcelia         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:00:23 by aarcelia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define PHILO_H
 
 # include "philo_structs.h"
-# include "libft.h"
 # include <stdio.h>
+# include <string.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 /*=================================FUNCTIONS==================================*/
 bool		ft_parse_args(int argc, char **argv, t_config *config);
@@ -34,6 +36,15 @@ uint64_t	get_elapsed_time(uint64_t start_time);
 void		ft_usleep(uint64_t time);
 bool		start_threads(t_main *simulation);
 void		dinner_over_message(t_main *main_struct, int times);
+
+/*==============================LIBFT FUNCTIONS===============================*/
+size_t		ft_strlen(const char *s);
+char		*ft_strrchr(const char *s, int c);
+void		ft_putstr_fd(char *s, int fd);
+void		ft_putendl_fd(char *s, int fd);
+int64_t		ft_atoll(char *s);
+void		*ft_calloc(size_t count, size_t size);
+int			ft_isdigit(int c);
 
 /*=================================CONSTANTS==================================*/
 # define USG "<num_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep>"

@@ -51,7 +51,7 @@ int	main(int argc, char *argv[])
 	t_main	main_struct;
 	int		ret;
 
-	ft_bzero(&main_struct, sizeof(t_main));
+	memset(&main_struct, 0, sizeof(t_main));
 	pthread_mutex_init(&main_struct.main_thread, NULL);
 	pthread_mutex_lock(&main_struct.main_thread);
 	ret = 0;

@@ -1,16 +1,60 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoll.c                                         :+:      :+:    :+:   */
+/*   philo_lib_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aarcelia <aarcelia@21-school.ru>           +#+  +:+       +#+        */
+/*   By: aarcelia <aarcelia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/13 18:14:50 by aarcelia          #+#    #+#             */
-/*   Updated: 2021/05/13 18:14:51 by aarcelia         ###   ########.fr       */
+/*   Created: 2021/07/07 12:51:28 by aarcelia          #+#    #+#             */
+/*   Updated: 2021/07/07 12:53:59 by aarcelia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	n;
+
+	n = 0;
+	if (s)
+	{
+		while (s[n])
+			n++;
+	}
+	return (n);
+}
+
+char	*ft_strrchr(const char *s, int c)
+{
+	char	*ret;
+	char	ctmp;
+	size_t	slen;
+
+	slen = ft_strlen(s);
+	ret = (char *)s + slen;
+	ctmp = (char)c;
+	slen++;
+	while (slen--)
+	{
+		if (*ret == ctmp)
+			return ((char *)ret);
+		ret--;
+	}
+	return (NULL);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	if (s)
+		write(fd, s, ft_strlen(s));
+}
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	ft_putstr_fd(s, fd);
+	write(fd, "\n", 1);
+}
 
 int64_t	ft_atoll(char *s)
 {

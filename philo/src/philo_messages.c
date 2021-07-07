@@ -6,11 +6,24 @@
 /*   By: aarcelia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:29:19 by aarcelia          #+#    #+#             */
-/*   Updated: 2021/07/06 21:02:15 by aarcelia         ###   ########.fr       */
+/*   Updated: 2021/07/07 12:59:10 by aarcelia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*ret;
+
+	ret = malloc(count * size);
+	return (memset(ret, 0, count * size));
+}
+
+int	ft_isdigit(int c)
+{
+	return (c >= 48 && c <= 57);
+}
 
 void	dinner_over_message(t_main *main_struct, int times)
 {
