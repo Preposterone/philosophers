@@ -14,12 +14,13 @@ HEADERS :=	$(addprefix $(INC_DIR)/, $(H_FILES))
 
 #compiler setup
 CC := gcc
-CFLAGS += -Wall -Werror -Wextra -g3 -pthread
+CFLAGS += -Wall -Werror -Wextra -o2 -pthread
 IFLAGS += -I$(INC_DIR)/
 
 #Sources
-#TODO: list sources explicitly
-SRCS := $(shell find ./src/ -type f -name "*.c" -exec basename {} \;)
+#SRCS := $(shell find ./src/ -type f -name "*.c" -exec basename {} \;)
+SRCS := main.c	parse_args.c	philo_messages.c	philo_routines.c	philo_threads.c\
+		philo_time.c	philo_utils.c
 SRC_FILES := $(addprefix $(SRC_DIR)/, $(SRCS))
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))

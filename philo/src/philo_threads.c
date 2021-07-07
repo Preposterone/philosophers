@@ -6,7 +6,7 @@
 /*   By: aarcelia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 15:17:16 by aarcelia          #+#    #+#             */
-/*   Updated: 2021/07/06 20:52:17 by aarcelia         ###   ########.fr       */
+/*   Updated: 2021/07/07 09:29:42 by aarcelia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_usleep(uint64_t time)
 	wait_until = get_current_time() + time;
 	while (true)
 	{
-		usleep(USLEEP_GENERIC);
+		usleep(USLEEP_SHORT);
 		if (get_current_time() >= wait_until)
 			break ;
 	}
@@ -61,7 +61,7 @@ static void	*killer_job(void *philo_p)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->busy);
-		usleep(USLEEP_GENERIC);
+		usleep(USLEEP_LONG);
 	}
 	return (NULL);
 }
@@ -102,7 +102,7 @@ bool	start_threads(t_main *simulation)
 		if (pthread_create(&id, NULL, &dinner_killer, simulation) != 0)
 			return (NULL);
 		pthread_detach(id);
-		usleep(USLEEP_GENERIC);
+		usleep(USLEEP_SHORT);
 	}
 	while (++i < simulation->config.count)
 	{
@@ -110,7 +110,7 @@ bool	start_threads(t_main *simulation)
 		if (pthread_create(&id, NULL, philosopher_job, tmp) != 0)
 			return (false);
 		pthread_detach(id);
-		usleep(USLEEP_GENERIC);
+		usleep(USLEEP_SHORT);
 	}
 	return (true);
 }

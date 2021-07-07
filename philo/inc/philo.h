@@ -6,7 +6,7 @@
 /*   By: aarcelia <aarcelia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 11:24:20 by aarcelia          #+#    #+#             */
-/*   Updated: 2021/07/05 11:24:20 by aarcelia         ###   ########.fr       */
+/*   Updated: 2021/07/07 09:27:58 by aarcelia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ void		dinner_over_message(t_main *main_struct, int times);
 # define P_RED   "\x1b[91m"
 # define P_YELLOW   "\x1b[33m"
 # define P_RESET   "\x1b[0m"
-# ifndef USLEEP_GENERIC
-#  define USLEEP_GENERIC 100
-# endif
+# define USLEEP_SHORT 100
+# define USLEEP_LONG 1000
 
 #endif
