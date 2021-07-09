@@ -15,14 +15,15 @@ IFLAGS += -I$(INC_DIR)/
 
 #Sources
 #SRCS := $(shell find ./src/ -type f -name "*.c" -exec basename {} \;)
-SRCS := main.c	\
-        parse_args.c	\
-        philo_lib_utils.c	\
-        philo_messages.c	\
-        philo_routines.c	\
-        philo_threads.c	\
-        philo_time.c	\
-        philo_utils.c
+SRCS := main.c\
+             parse_args.c\
+             philo_lib_utils2.c\
+             philo_lib_utils.c\
+             philo_messages.c\
+             philo_routines.c\
+             philo_threads.c\
+             philo_time.c\
+             philo_utils.c
 
 SRC_FILES := $(addprefix $(SRC_DIR)/, $(SRCS))
 
